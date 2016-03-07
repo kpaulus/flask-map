@@ -1,0 +1,36 @@
+web:
+  restart: always
+  build: ./web
+  command: /usr/local/bin/gunicorn -w 2 -b :8000 app:app
+  expose:
+   - "8000"
+  volumes:
+    - /usr/src/app/static
+  links:
+   - mongo
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+  volumes_from:
+    - web
+  links:
+    - web:web
+
+mongodata:
+  image: mongo:latest
+  volumes:
+   - /data/db
+  command: --break-mongo
+
+mongo:
+  image: mongo:latest
+  volumes_from:
+   - mongodata
+  ports:
+   - "27017:27017"
+  command: --smallfiles --rest

@@ -1,6 +1,6 @@
 <!doctype html>
 
-<head><title>Map</title>
+<head><title>Bike Chaser</title>
 <link rel='stylesheet' href="{{ url_for('static', filename='leaflet-0.7.3.css') }}" />
 <link rel='stylesheet' href="{{ url_for('static', filename='map.css') }}" />
 <script src="{{ url_for('static', filename='jquery-2.0.0.min.js') }}"></script>
@@ -11,4 +11,5 @@
 <script>
 	var map = L.map('map').setView([46.8772, -96.7894], 13);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+    L.marker([46.8772, -96.7894]).addTo(map);
 </script>

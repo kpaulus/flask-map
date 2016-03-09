@@ -12,19 +12,19 @@ db = client.mapdb
 
 @app.route('/')
 def map():
-
-    _points = db.mapdb.find()
+    points = []
+    _points = db.mapdb.find()    
     for point in _points:
-        points.append('lat': point.lat, 'lon': point.lon)
+        points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
 
     return render_template('map.html', points=points)
 
 @app.route('/locations', methods=['GET'])
 def get_locations():
-
+    points = []
     _points = db.mapdb.find()
     for point in _points:
-        points.append('lat': point.lat, 'lon': point.lon)
+        points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
 
     return jsonify({ 'points': points })
     

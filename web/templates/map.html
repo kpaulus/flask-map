@@ -11,9 +11,23 @@
 <script>
 	var map = L.map('map').setView([46.8772, -96.7894], 13);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+	var markers = new L.FeatureGroup();
+	markers.addLayer(L.marker([46.897695, -96.803058]));
+	map.addLayer(markers);
 
-	{% for point in points %}
-	    L.marker([{{point.lat}}, {{point.lon}}]).addTo(map);
-	{% endfor %}
+	setInterval(function(){
+		$.ajax({url: '/locations', success: updateLocations});
+	}, 10000)
+
+	function updateLocations(points){
+		map.removeLayer(markers);
+		markers = new L.FeatureGroup()
+		points.points.forEach(function(point){
+			var marker = L.marker([point.lat, point.lon]);
+	    	marker.bindPopup(point.user + "").openPopup();
+	    	markers.addLayer(marker);
+		}, this)
+		map.addLayer(markers)
+	};
 	
 </script>

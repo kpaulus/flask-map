@@ -13,7 +13,7 @@
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
 	{% for point in points %}
-	    L.marker([point.lat, point.lon]).addTo(map);
+	    L.marker([{{point.lat}}, {{point.lon}}]).addTo(map);
 	{% endfor %}
 	
 </script>

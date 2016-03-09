@@ -13,18 +13,30 @@ db = client.mapdb
 @app.route('/')
 def map():
     points = []
-    _points = db.mapdb.find()    
-    for point in _points:
-        points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
+    uniqueUsers = []
+    uniqueUsers = db.mapdb.find().distinct("user") 
+    for userId in uniqueUsers:
+        uniquePointForUser = db.mapdb.find({"user":userId}).sort("timestamp",-1)[0]
+        points.append({'user':uniquePointForUser['user'],'lat': uniquePointForUser['lat'], 'lon': uniquePointForUser['lon']})
+    
+    # _points = 
+    # for point in _points:
+    #     points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
 
     return render_template('map.html', points=points)
 
 @app.route('/locations', methods=['GET'])
 def get_locations():
     points = []
-    _points = db.mapdb.find()
-    for point in _points:
-        points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
+    uniqueUsers = []
+    uniqueUsers = db.mapdb.find().distinct("user") 
+    for userId in uniqueUsers:
+        uniquePointForUser = db.mapdb.find({"user":userId}).sort("timestamp", -1)[0]
+        points.append({'user':uniquePointForUser['user'],'lat': uniquePointForUser['lat'], 'lon': uniquePointForUser['lon']})
+    # points = []
+    # _points = db.mapdb.find(name="timestamp").distinct("user")
+    # for point in _points:
+    #     points.append({'user':point['user'],'lat': point['lat'], 'lon': point['lon']})
 
     return jsonify({ 'points': points })
     

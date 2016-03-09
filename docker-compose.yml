@@ -1,25 +1,28 @@
 web:
   restart: always
   build: ./web
-  command: /usr/local/bin/gunicorn -w 2 -b :8000 app:app
-  expose:
-   - "8000"
+  command: python -u app.py
+  #command: /usr/local/bin/gunicorn -w 2 -b :8000 app:app
+  #expose:
+   #- "8000"
+  ports:
+   - "5000:5000"
   volumes:
     - /usr/src/app/static
   links:
    - mongo
 
-nginx:
-  restart: always
-  build: ./nginx/
-  ports:
-    - "80:80"
-  volumes:
-    - /www/static
-  volumes_from:
-    - web
-  links:
-    - web:web
+#nginx:
+ # restart: always
+ # build: ./nginx/
+ # ports:
+ #   - "80:80"
+ # volumes:
+ #   - /www/static
+ # volumes_from:
+ #   - web
+ # links:
+ #   - web:web
 
 mongodata:
   image: mongo:latest

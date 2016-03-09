@@ -11,5 +11,9 @@
 <script>
 	var map = L.map('map').setView([46.8772, -96.7894], 13);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
-    L.marker([46.8772, -96.7894]).addTo(map);
+
+	{% for point in points %}
+	    L.marker([point.lat, point.lon]).addTo(map);
+	{% endfor %}
+	
 </script>
